@@ -1,105 +1,49 @@
-export default function EmptyState({ type = 'empty', onAdd, searchQuery, selectedTags }) {
-  if (type === 'search') {
-    return (
-      <div className="empty-state" style={{ color: 'var(--text-secondary)' }}>
-        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="28" cy="28" r="16" stroke="var(--border-hover)" strokeWidth="2.5"/>
-          <path d="M40 40L52 52" stroke="var(--border-hover)" strokeWidth="2.5" strokeLinecap="round"/>
-          <path d="M23 28H33" stroke="var(--text-muted)" strokeWidth="2" strokeLinecap="round"/>
-          <path d="M28 23V33" stroke="var(--text-muted)" strokeWidth="2" strokeLinecap="round"/>
-        </svg>
-        <div>
-          <p className="font-medium" style={{ color: 'var(--text)' }}>
-            "{searchQuery}" için sonuç bulunamadı
-          </p>
-          <p className="text-sm mt-1">Farklı anahtar kelimeler deneyin</p>
-        </div>
-      </div>
-    );
-  }
+import { useI18n } from '../i18n.jsx';
 
-  if (type === 'filtered') {
-    return (
-      <div className="empty-state" style={{ color: 'var(--text-secondary)' }}>
-        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="12" y="16" width="40" height="6" rx="3" fill="var(--border-hover)"/>
-          <rect x="18" y="28" width="28" height="6" rx="3" fill="var(--border)"/>
-          <rect x="24" y="40" width="16" height="6" rx="3" fill="var(--surface2)"/>
-        </svg>
-        <div>
-          <p className="font-medium" style={{ color: 'var(--text)' }}>
-            Bu tag'e ait link yok
-          </p>
-          <p className="text-sm mt-1">Yeni link ekleyip bu tag'i atayabilirsiniz</p>
-        </div>
-        {onAdd && (
-          <button className="btn btn-primary mt-2" onClick={onAdd}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M12 5v14M5 12h14"/></svg>
-            Link Ekle
-          </button>
-        )}
-      </div>
-    );
-  }
+export default function EmptyState({ type='empty', onAdd, searchQuery }) {
+  const { t } = useI18n();
 
-  if (type === 'pinned') {
-    return (
-      <div className="empty-state" style={{ color: 'var(--text-secondary)' }}>
-        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20 14 L44 14 L44 52 L32 44 L20 52 Z" stroke="var(--border-hover)" strokeWidth="2.5" strokeLinejoin="round" fill="none"/>
-        </svg>
-        <div>
-          <p className="font-medium" style={{ color: 'var(--text)' }}>Sabitlenmiş link yok</p>
-          <p className="text-sm mt-1">Önemli linkleri sabitleyin, her zaman üstte görün</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (type === 'archived') {
-    return (
-      <div className="empty-state" style={{ color: 'var(--text-secondary)' }}>
-        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="10" y="20" width="44" height="34" rx="4" stroke="var(--border-hover)" strokeWidth="2.5" fill="none"/>
-          <path d="M10 14h44" stroke="var(--border-hover)" strokeWidth="2.5" strokeLinecap="round"/>
-          <path d="M26 34h12" stroke="var(--text-muted)" strokeWidth="2" strokeLinecap="round"/>
-        </svg>
-        <div>
-          <p className="font-medium" style={{ color: 'var(--text)' }}>Arşiv boş</p>
-          <p className="text-sm mt-1">Eski linkleri arşivleyerek buraya taşıyabilirsiniz</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Default: completely empty
-  return (
-    <div className="empty-state" style={{ color: 'var(--text-secondary)' }}>
-      <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="14" y="10" width="52" height="64" rx="6" stroke="var(--border-hover)" strokeWidth="2.5" fill="none"/>
-        <path d="M26 28h28" stroke="var(--border-hover)" strokeWidth="2" strokeLinecap="round"/>
-        <path d="M26 38h20" stroke="var(--border)" strokeWidth="2" strokeLinecap="round"/>
-        <path d="M26 48h14" stroke="var(--border)" strokeWidth="2" strokeLinecap="round"/>
-        <circle cx="60" cy="62" r="12" fill="var(--surface)" stroke="var(--accent)" strokeWidth="2.5"/>
-        <path d="M60 57v10M55 62h10" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round"/>
+  const emptyIcon = (
+    <div style={{ width:72, height:72, borderRadius:20, background:'var(--accent-dim)', display:'flex', alignItems:'center', justifyContent:'center', marginBottom:4 }}>
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        {type==='search' && <><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></>}
+        {type==='filtered' && <><polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"/></>}
+        {type==='pinned' && <><path d="M12 2l3 7h7l-5.5 4.5 2 7.5-6.5-4.5-6.5 4.5 2-7.5L2 9h7z"/></>}
+        {type==='archived' && <><path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4"/></>}
+        {type==='empty' && <><path d="M5 4h14v16l-7-4-7 4z"/></>}
       </svg>
+    </div>
+  );
+
+  const titles = {
+    search: `"${searchQuery}" ${t('noResults')}`,
+    filtered: t('noLinksTag'),
+    pinned: t('noPinned'),
+    archived: t('emptyArchive'),
+    empty: t('firstLink'),
+  };
+  const descs = {
+    search: t('tryDifferent'),
+    filtered: t('addLinkForTag'),
+    pinned: t('pinDesc'),
+    archived: t('archiveDesc'),
+    empty: t('firstLinkDesc'),
+  };
+
+  return (
+    <div className="empty-state">
+      {emptyIcon}
       <div>
-        <p className="text-lg font-semibold" style={{ color: 'var(--text)' }}>
-          İlk linkini ekle
-        </p>
-        <p className="text-sm mt-1" style={{ maxWidth: 280 }}>
-          Instagram'da gördüğün siteleri, GitHub repolarını ya da herhangi bir linki tag'leyerek kaydet.
-        </p>
+        <p style={{ fontSize:16, fontWeight:600, color:'var(--text)', marginBottom:4 }}>{titles[type]}</p>
+        <p style={{ fontSize:14, color:'var(--text-secondary)', maxWidth:320, margin:'0 auto', lineHeight:1.6 }}>{descs[type]}</p>
       </div>
-      {onAdd && (
-        <button className="btn btn-primary" onClick={onAdd}>
+      {(type==='empty'||type==='filtered') && onAdd && (
+        <button className="btn btn-primary" onClick={onAdd} style={{marginTop:4}}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M12 5v14M5 12h14"/></svg>
-          Link Ekle
+          {t('newLink')}
         </button>
       )}
-      <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-        Klavye kısayolu: <span className="kbd">N</span>
-      </p>
+      {type==='empty' && <p style={{fontSize:12,color:'var(--text-muted)'}}>{t('shortcutHint')} <span className="kbd">N</span></p>}
     </div>
   );
 }

@@ -1,0 +1,35 @@
+{
+  "appId": "com.linkpad.app",
+  "productName": "LinkPad",
+  "directories": {
+    "output": "release"
+  },
+  "files": [
+    "dist/**/*",
+    "electron/**/*",
+    "public/icon-512.png"
+  ],
+  "win": {
+    "target": "nsis",
+    "icon": "public/icon-512.png"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true
+  },
+  "mac": {
+    "target": "dmg",
+    "icon": "public/icon-512.png",
+    "category": "public.app-category.productivity"
+  },
+  "dmg": {
+    "title": "LinkPad"
+  },
+  "linux": {
+    "target": "AppImage",
+    "icon": "public/icon-512.png",
+    "category": "Utility"
+  }
+}
